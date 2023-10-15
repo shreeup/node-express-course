@@ -30,6 +30,7 @@ app.get("/api/v1/products/:productID", (req, res) => {
 app.get("/api/v1/query", (req, res) => {
   let search = req.query.search;
   let limit = req.query.limit;
+  let costlimit = req.query.costlimit;
   let filtered = products;
   if (filtered && search)
     filtered = filtered.filter(
@@ -40,12 +41,8 @@ app.get("/api/v1/query", (req, res) => {
   if (filtered && limit && filtered.length > limit)
     filtered = filtered.slice(0, limit);
 
-  if (filtered && search)
-    filtered = filtered.filter(
-      (p) =>
-        p.name.toLowerCase().includes(search) ||
-        p.desc.toLowerCase().includes(search)
-    );
+  if (filtered && costlimit)
+    filtered = filtered.filter((p) => p.price <= costlimit);
 
   res.json({
     message: `These are the products you are looking for`,
