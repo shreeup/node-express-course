@@ -1,0 +1,8 @@
+Answers
+1) Middleware refers to a set of function that execute during the processing of HTTP requests. They have access to request , 
+response and next middleware function in the application's request response life cycle. they can execute code, end request
+- reponse cycle,call next middleware function in stack.
+2) CRUD stands for create read update delete
+3) 1 - app can access variables within .env file using process.env.[variablename].
+   2 - .env should be added to gitignore so that the file is not pushed to repo. It remains within developer local 
+        machine
