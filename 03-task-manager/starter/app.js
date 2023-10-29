@@ -7,7 +7,9 @@ var bodyParser = require("body-parser");
 const tasks = require("./routes/tasks");
 const connectDB = require("./db/connect");
 require("dotenv").config();
-
+const notFound = require("./middleware/not-found");
+const errorHandler = require("./middleware/error-handler");
+app.use(express.static("./public"));
 app.use(express.json());
 // app.use(
 //   bodyParser.urlencoded({
@@ -15,12 +17,13 @@ app.use(express.json());
 //   })
 // );
 app.use(express.urlencoded({ extended: true }));
-app.get("/hello", (req, res) => {
-  res.send("Task Manager App");
-});
+// app.get("/hello", (req, res) => {
+//   res.send("Task Manager App");
+// });
 app.use("/api/v1/tasks", tasks);
-
-const port = 3009;
+app.use(notFound);
+app.use(errorHandler);
+const port = process.env.PORT || 3009;
 
 const start = async () => {
   try {
