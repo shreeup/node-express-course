@@ -1,0 +1,15 @@
+class CustomAPIError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+const getTask = asyncWrapper(async (req, res, next) => {
+  const { id: taskID } = req.params;
+  const task = await Task.findOne({ _id: taskID });
+  if (!task) {
+     return next(new CustomAPIError(“Resource you are looking for is not found!“,404));
+  }
+  res.status(200).json({ task });
+});
