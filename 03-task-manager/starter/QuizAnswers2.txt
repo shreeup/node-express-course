@@ -1,16 +1,15 @@
-class ResourceNotFoundError extends Error {
-   constructor(resource, query) {
-    super(`Resource ${resource} was not found.`);
-    this.data = { resource, query };
+class CustomAPIError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
   }
 }
+
 const getTask = asyncWrapper(async (req, res, next) => {
   const { id: taskID } = req.params;
   const task = await Task.findOne({ _id: taskID });
   if (!task) {
-    // your code here
-    //res.status(404).json({"message":"Not Found"})
-     throw new ResourceNotFoundError('task', req.query);
+     throw new CustomAPIError("Resource you are looking for is not found!",404);
   }
   res.status(200).json({ task });
 });
