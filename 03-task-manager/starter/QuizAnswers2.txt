@@ -1,9 +1,16 @@
+class ResourceNotFoundError extends Error {
+   constructor(resource, query) {
+    super(`Resource ${resource} was not found.`);
+    this.data = { resource, query };
+  }
+}
 const getTask = asyncWrapper(async (req, res, next) => {
   const { id: taskID } = req.params;
   const task = await Task.findOne({ _id: taskID });
   if (!task) {
     // your code here
-    res.status(404).json({"message":"Not Found"})
+    //res.status(404).json({"message":"Not Found"})
+     throw new ResourceNotFoundError('task', req.query);
   }
   res.status(200).json({ task });
 });
